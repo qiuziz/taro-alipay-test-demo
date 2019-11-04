@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image, Button } from '@tarojs/components'
+import { View, Image } from '@tarojs/components'
 import './index.less'
-import { AtTabs, AtTabsPane, AtIcon, AtButton, AtModal, AtToast } from 'taro-ui';
+import { AtTabs, AtTabsPane, AtIcon } from 'taro-ui';
 
 const DefaultShopImg = `https://test.chengniu.com:8072/shop-default.png`;
 
@@ -97,28 +97,10 @@ const DATA: any = [
       "effTime": ""
   }
 ];
-interface order {
-  orderType: string, //订单类型（1洗车，2油卡）
-  orderNo: string, //订单号
-  oilCard: string, //油卡充值卡号
-  originalPrice: number, //充值金额（原价）
-  storeName: string, //洗车店名称
-  storeArea: string, //洗车店地址
-  state: string, //订单状态
-  storeImg: string, //洗车店图片
-  orderName: string, //洗车订单名称
-  goodsName: string, //商品名称
-  price: number, //油卡订单金额（售价）
-  amount: number, //洗车订单总价
-  couponAmount: number, //洗车使用优惠券后金额
-  effTime: string, //订单有效期
-  evaState: string, //评价状态
-  createDate: string//订单创建时间
-}
 
 
 const fetchData = (page = 1): any => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let data = [];
     setTimeout(() => {
       resolve({data: {dataList: data.concat(DATA), pageNum: page}})
@@ -137,9 +119,8 @@ export default class Order extends Component<any, any> {
   config: Config = {
     navigationBarTitleText: '我的订单'
   }
-  order: order;
 	orderList: any[] = [];
-  constructor(props) {
+  constructor(props: any) {
     super(props);
 
     const urlParams: any = this.$router.params;
@@ -168,12 +149,12 @@ export default class Order extends Component<any, any> {
       // 总页码
       pageTotal: 1,
       ...urlParams,
-      currentTab: parseInt(urlParams.currentTab) || 0,
+      currentTab: 0,
     };
   }
 
   componentWillMount() {
-    // setGlobalData('userCode', 'nnaw18217668793');
+
   }
 
   componentDidMount() {
@@ -244,9 +225,10 @@ export default class Order extends Component<any, any> {
 
   render() {
     const { orderList, tabList, currentTab } = this.state;
+    console.log(tabList)
     const orderContent = orderList.map((order: any, idx: number) => {
       return (
-        <View className="order" key={order.orderNo || idx}>
+        <View className="order" key={idx}>
           <View className="order-header">
             <View className="shop-name">
               <AtIcon value='car-logo' size='18' color="#8B8B8B"></AtIcon>
